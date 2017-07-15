@@ -1,0 +1,34 @@
+poiss<-function(iterations,l)
+{
+	dist<-vector(length=iterations)
+	sum<-vector(length=iterations)
+	for (i in 1:iterations)
+	{
+		u<-runif(1)
+		j=0
+		sum[i]=exp(-l)
+		while(1)
+		{
+			if (u<sum[i])
+			{
+				break
+			}
+			j=j+1
+			sum[i]=sum[i]+exp(-l)*(l/j+1)^j
+		}
+		dist[i]=j
+	}
+	cat("Mean=",mean(dist),"Variance=",var(dist))
+	hist(dist,main="Poisson",sub="PDF",col="red",breaks=50)
+	plot(ecdf(dist),main="Poisson",sub="CDF",col="red")
+}
+geom<-function(iterations,p)
+{
+	u<-runif(iterations)
+	dist<-vector(length=iterations)
+	dist<-floor(log(u)/log(1-p))+1
+	cat("Mean=",mean(dist),"Variance=",var(dist))
+	hist(dist,main="Geometric",col="red",breaks=50)
+}
+geom(5000,0.3)
+poiss(5000,4)
